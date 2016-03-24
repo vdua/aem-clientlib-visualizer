@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>Clientlib Visualization</title>
+
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"
+          rel="stylesheet">
+    <style>
+        .node {
+            fill: #ccc;
+            stroke: #fff;
+            stroke-width: 2px;
+        }
+        .node.highlight {
+            fill: rgb(214, 39, 40);
+        }
+        .link {
+            stroke: #777;
+            stroke-width: 2px;
+            fill : none;
+        }
+        .link.embed {
+            stroke-dasharray: 0,2,4;
+        }
+        text {
+             font: 10px sans-serif;
+             pointer-events: none;
+             text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+         }
+    </style>
+    <sly data-sly-use.clientLib="${'/libs/granite/sightly/templates/clientlib.html'}"/>
+    <sly data-sly-call="${clientLib.all @ categories=['jquery']}"/>
+    <script src='http://d3js.org/d3.v3.min.js'></script>
+    <sly data-sly-call="${clientLib.all @ categories=['freeworks.clientlibvisualizer']}"/>
+</head>
+<body>
+<svg></svg>
+<div>
+    <label>
+        <span>Enter ClientlibName: </span>
+        <input type="text" id="clientlib-name" value="guides.touchAuthoring"/>
+    </label>
+</div>
+<div>
+    <button type="button">Visualize</button>
+</div>
+</body>
+</html>
