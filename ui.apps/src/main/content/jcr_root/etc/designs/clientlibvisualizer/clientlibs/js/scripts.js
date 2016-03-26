@@ -126,7 +126,31 @@
                             });
                         var svgNodes = svg.append('g').selectAll('.node')
                             .data(nodes);
-                        var newSvgNodes = svgNodes.enter().append("g").attr("class", "node");
+                        var newSvgNodes = svgNodes.enter().append("g").attr("class", "node")
+                            .on("mouseover", function () {
+                                d3.select(this).selectAll("circle")
+                                    .transition()
+                                    .duration(250)
+                                    .attr("r", radius + 4);
+                                d3.select(this).selectAll("text")
+                                    .transition()
+                                    .duration(250)
+                                    .style("display", "block")
+                                    .style("font-size", "14px");
+                            })
+                            .on("mouseout", function () {
+                                d3.select(this).selectAll("circle")
+                                    .transition()
+                                    .duration(250)
+                                    .attr("r", radius);
+                                d3.select(this).selectAll("text")
+                                    .transition()
+                                    .duration(250)
+                                    .style("display", function () {
+                                        return ($("#hidelabels").text().trim() == "Show Labels") ? "none" : "block";
+                                    })
+                                    .style("font-size", "10px");
+                            });
                         newSvgNodes.append('circle')
                             .attr('r', 8)
                             .call(force.drag);
