@@ -7,12 +7,12 @@
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"
           rel="stylesheet">
     <style>
-        .node {
+        .node circle {
             fill: #ccc;
             stroke: #fff;
             stroke-width: 2px;
         }
-        .node.highlight {
+        .node circle.highlight {
             fill: rgb(214, 39, 40);
         }
         .link {
@@ -23,7 +23,7 @@
         .link.embed {
             stroke-dasharray: 0,2,4;
         }
-        text {
+        .node text {
              font: 10px sans-serif;
              pointer-events: none;
              text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
@@ -43,7 +43,8 @@
     </label>
 </div>
 <div>
-    <button type="button">Visualize</button>
+    <button type="button" id="visualize">Visualize</button>
+    <button type="button" id="hidelabels">Hide Labels</button>
 </div>
 </body>
 </html>

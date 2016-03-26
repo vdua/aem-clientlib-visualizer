@@ -124,23 +124,24 @@
                             .attr("marker-end", function (d) {
                                 return "url(#" + d.type + ")";
                             });
-                        var circles = svg.append('g').selectAll('.node')
-                            .data(nodes)
-                            .enter().append('circle')
+                        var svgNodes = svg.append('g').selectAll('.node')
+                            .data(nodes);
+                        var newSvgNodes = svgNodes.enter().append("g").attr("class", "node");
+                        newSvgNodes.append('circle')
                             .attr('r', 8)
-                            .attr('class', function (d) {
-                                return "node " + (d.highlight ? "highlight" : "")
-                            })
                             .call(force.drag);
-                        var text = svg.append("g").selectAll("text")
-                            .data(force.nodes())
-                            .enter().append("text")
+                        newSvgNodes.append("text")
                             .attr("x", 8)
-                            .attr("y", ".31em")
+                            .attr("y", ".31em");
+                        svgNodes.exit().remove();
+                        var circles = svgNodes.selectAll('circle')
+                            .attr('class', function (d) {
+                                return (d.highlight ? "highlight" : "")
+                            });
+                        var text = svgNodes.selectAll('text')
                             .text(function (d) {
                                 return d.category;
                             });
-
                         force.start();
                     }
                 })
@@ -149,9 +150,20 @@
         visualize = function () {
             var clientlibName = $("#clientlib-name").val();
             Visualizer.visualizeClientlib(clientlibName);
+        },
+        hideLabels = function () {
+            var text = $(this).text().trim();
+            if (text == "Hide Labels") {
+                $('.node text').hide();
+                $(this).text("Show Labels");
+            } else {
+                $('.node text').show();
+                $(this).text("Hide Labels");
+            }
         };
     $(function () {
-        $("button").click(visualize);
+        $("#visualize").click(visualize);
+        $("#hidelabels").click(hideLabels);
         visualize();
     })
 }());
