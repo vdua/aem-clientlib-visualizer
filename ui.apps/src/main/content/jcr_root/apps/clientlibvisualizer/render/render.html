@@ -35,7 +35,6 @@
     <sly data-sly-call="${clientLib.all @ categories=['freeworks.clientlibvisualizer']}"/>
 </head>
 <body>
-<svg></svg>
 <div>
     <label>
         <span>Enter ClientlibName: </span>
@@ -45,6 +44,10 @@
 <div>
     <button type="button" id="visualize">Visualize</button>
     <button type="button" id="hidelabels">Hide Labels</button>
+    <button type="button" id="generateDownloadLink">Generate Download Link</button>
+</div>
+<div id="canvas">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>
 </div>
 </body>
 </html>

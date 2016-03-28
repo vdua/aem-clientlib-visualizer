@@ -65,9 +65,11 @@
                             links = [],
                             width = 1400,
                             height = 480,
-                            svg = d3.select('body').append('svg')
+                            svg = d3.select('#canvas').append('svg')
                                 .attr('width', width)
-                                .attr('height', height),
+                                .attr('height', height)
+                                .attr("version", "1.1")
+                                .attr("xmlns", "http://www.w3.org/2000/svg"),
                             radius = 8;
                         createLinks(nodes, links, clientlibs, nodeIndex);
                         var tick = function () {
@@ -171,6 +173,53 @@
                 })
             }
         },
+        copy = function (original, copyStyles) {
+            var duplicate = original.cloneNode(false);
+            if (copyStyles) {
+                duplicate.setAttribute("style", getStyleString(original));
+            }
+            var children = original.childNodes,
+                tags = ["circle", "text", "path"];
+            for (var i =0; i < children.length; i++) {
+                var child = children[i];
+                var newChild;
+                if (!(tags instanceof Text) && tags.indexOf(child.tagName) > -1) {
+                     newChild = copy(child, true)
+                } else {
+                    newChild = copy(child, false);
+                }
+                duplicate.appendChild(newChild);
+            }
+            return duplicate;
+        },
+        getStyleString = function (elem) {
+            var styles = getComputedStyle(elem),
+                styleStr = "",
+                i = 0;
+            for (i = 0; i < styles.length; i++) {
+                styleStr += styles[i] + ":" + styles[styles[i]] + ((i < (styles.length - 1)) ? ";" : "");
+            }
+            return styleStr;
+        },
+        generateDownloadLink = function () {
+            debugger;
+            var canvasClone = copy($("#canvas")[0], false),
+                svgClone = $("svg", canvasClone);
+            var svg = $(canvasClone).html(),
+                b64 = btoa(svg),
+                anchor = $("#anchor");
+            if (anchor.length == 0) {
+                anchor = $("<a />").attr({
+                    "id" : "anchor",
+                    "href-lang" : "image/svg+xml",
+                    "title" : "download.svg"
+                }).text("Download");
+                $("body").prepend(anchor);
+            }
+            anchor.attr({
+                "href" : "data:image/svg+xml;base64,\n"+b64
+            });
+        },
         visualize = function () {
             var clientlibName = $("#clientlib-name").val();
             Visualizer.visualizeClientlib(clientlibName);
@@ -188,6 +237,7 @@
     $(function () {
         $("#visualize").click(visualize);
         $("#hidelabels").click(hideLabels);
+        $("#generateDownloadLink").click(generateDownloadLink);
         visualize();
     })
 }());
